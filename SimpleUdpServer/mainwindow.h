@@ -7,14 +7,12 @@
 
 #include <QObject>
 #include <QDateTime>
-#include <QHash>
 #include <QStringList>
 #include <QDir>
 #include <QDebug>
 
-#include "qtcsv/stringdata.h"
-#include "qtcsv/reader.h"
-#include "qtcsv/writer.h"
+#include <csvhandler.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,7 +28,7 @@ public:
 signals:
     void triggerAccData(QString);
     void serverStarted();
-    void serverFinished();
+    void serverFinished(QString);
 
 public slots:
     void readInfo();
@@ -39,14 +37,10 @@ private slots:
     void on_startServer_clicked();
     void on_closeServer_clicked();
 
-    void startDataCollect();
-    void collectData(QString);
-    void finishDataCollect();
 private:
     Ui::MainWindow *ui;
     QUdpSocket socket;
 
-    QtCSV::StringData csvStateData;
-    QStringList currentDataCollection;
+    CsvHandler csv;
 };
 #endif // MAINWINDOW_H

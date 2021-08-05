@@ -5,16 +5,17 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
+
     ui->setupUi(this);
 
     connect(this, &MainWindow::serverStarted,
-            this, &MainWindow::startDataCollect);
+            &csv, &CsvHandler::startDataCollect);
 
     connect(this, &MainWindow::triggerAccData,
-            this, &MainWindow::collectData);
+            &csv, &CsvHandler::collectData);
 
     connect(this, &MainWindow::serverFinished,
-            this, &MainWindow::finishDataCollect);
+            &csv, &CsvHandler::finishDataCollect);
 }
 
 MainWindow::~MainWindow() {
@@ -47,39 +48,8 @@ void MainWindow::on_startServer_clicked() {
 void MainWindow::on_closeServer_clicked() {
     disconnect(&socket, &QUdpSocket::readyRead,
             this, &MainWindow::readInfo);
-    emit serverFinished();
+    QString fileName = ui->fileNameInput->toPlainText();
+    emit serverFinished(fileName);
     ui->serverStatus->setStyleSheet("background-color: rgb(255, 0, 0);");
     socket.close();
-}
-
-void MainWindow::startDataCollect() {
-    csvStateData.clear();
-    currentDataCollection.clear();
-
-    currentDataCollection << "acc_x" << "acc_y" << "acc_z";
-    csvStateData.addRow(currentDataCollection);
-    currentDataCollection.clear();
-}
-
-void MainWindow::collectData(QString accData) {
-    QStringList accList = accData.split(",");
-    if (accList.length() != 3){
-        qInfo() << "Incorrect information coming!";
-        return;
-    }
-
-    currentDataCollection << accList[0] << accList[1] << accList[2];
-    csvStateData.addRow(currentDataCollection);
-    currentDataCollection.clear();
-}
-
-void MainWindow::finishDataCollect() {
-    qInfo() << "Saving data to: " << QDir::currentPath();
-    //QDateTime fileCreationDateTime;
-    //QString nameComplement = fileCreationDateTime.currentDateTime().toString("h:m:s ap");
-    QString nameComplement = ui->fileNameInput->toPlainText();
-    QString filePath = QDir::currentPath() + "/tello-data-" + nameComplement + ".csv";
-    QtCSV::Writer::write(filePath, csvStateData);
-
-    csvStateData.clear();
 }
