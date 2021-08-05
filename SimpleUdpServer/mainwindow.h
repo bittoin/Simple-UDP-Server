@@ -36,6 +36,7 @@ public slots:
 private slots:
     void on_startServer_clicked();
     void on_closeServer_clicked();
+    void createIpList();
 
 private:
     Ui::MainWindow *ui;

@@ -29,11 +29,9 @@ unix{
 }
 
 win32{
-    #include(external\qtcsv\qtcsv.pri)
+    include(external\qtcsv\qtcsv.pri)
     LIBS += "C:/Users/mateu/Documents/GitHub/Simple-UDP-Server/build-SimpleUdpServer-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/debug/qtcsv.dll"
 }
-
-include(external/qtcsv/qtcsv.pri)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

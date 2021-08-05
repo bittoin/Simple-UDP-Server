@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QNetworkInterface>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, &MainWindow::serverFinished,
             &csv, &CsvHandler::finishDataCollect);
+
+    createIpList();
 }
 
 MainWindow::~MainWindow() {
@@ -28,7 +31,6 @@ void MainWindow::readInfo() {
         QNetworkDatagram datagram = socket.receiveDatagram();
         QByteArray data = datagram.data();
         emit triggerAccData(data);
-        //qInfo() << "Incoming data: " << data;
     }
 }
 
@@ -53,4 +55,13 @@ void MainWindow::on_closeServer_clicked() {
     emit serverFinished(fileName);
     ui->serverStatus->setStyleSheet("background-color: rgb(255, 0, 0);");
     socket.close();
+}
+
+void MainWindow::createIpList() {
+    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+    //for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+    for (auto &address: QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+            ui->ipList->addItem(address.toString());
+    }
 }
