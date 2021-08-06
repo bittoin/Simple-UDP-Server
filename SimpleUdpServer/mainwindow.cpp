@@ -67,6 +67,7 @@ void MainWindow::on_closeServer_clicked() {
 
     if (ui->testBox->isChecked()){
         timer.stop();
+        ui->testBox->setChecked(false);
     }
 
     socket.close();
