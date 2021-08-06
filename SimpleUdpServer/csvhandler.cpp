@@ -1,4 +1,5 @@
 #include "csvhandler.h"
+#include <QRandomGenerator>
 
 CsvHandler::CsvHandler(QObject *parent) : QObject(parent) {
 
@@ -30,13 +31,17 @@ void CsvHandler::collectData(QString accData) {
 }
 
 void CsvHandler::finishDataCollect(QString fileName) {
+    QString filePath = "";
     qInfo() << "Saving data to: " << QDir::currentPath();
-    //QDateTime fileCreationDateTime;
-    //QString nameComplement = fileCreationDateTime.currentDateTime().toString("h:m:s ap");
-    //QString nameComplement = ui->fileNameInput->toPlainText();
-    QString nameComplement = fileName;
-    QString filePath = QDir::currentPath() + "/tello-data-" + nameComplement + ".csv";
-    QtCSV::Writer::write(filePath, csvStateData);
 
+    if (fileName.length() == 0){
+        qInfo() << "Campo vazio!";
+        quint32 randomValue = QRandomGenerator::global()->bounded(0, 99999);
+        filePath = QDir::currentPath() + "/data-" + QString::number(randomValue) + ".csv";
+    } else{
+        filePath = QDir::currentPath() + "/tello-data-" + fileName + ".csv";
+    }
+
+    QtCSV::Writer::write(filePath, csvStateData);
     csvStateData.clear();
 }

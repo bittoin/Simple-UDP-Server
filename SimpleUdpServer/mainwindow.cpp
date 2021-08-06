@@ -33,7 +33,8 @@ void MainWindow::readInfo() {
 }
 
 void MainWindow::on_startServer_clicked() {
-    if (!socket.bind(QHostAddress("0.0.0.0"), 6666)) {
+    int portNumber = ui->portNumber->value();
+    if (!socket.bind(QHostAddress("0.0.0.0"), portNumber)) {
         qInfo() << socket.errorString();
         return;
     }else{
