@@ -8,9 +8,8 @@
 #include <QObject>
 #include <QDateTime>
 #include <QStringList>
-#include <QDir>
 #include <QDebug>
-
+#include <QTimer>
 #include <csvhandler.h>
 
 
@@ -43,5 +42,6 @@ private:
     QUdpSocket socket;
 
     CsvHandler csv;
+    QTimer timer;
 };
 #endif // MAINWINDOW_H

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
+
 #include <QNetworkInterface>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, &MainWindow::serverFinished,
             &csv, &CsvHandler::finishDataCollect);
+
+    timer.setInterval(1000);
+
+    connect(&timer, &QTimer::timeout,
+            this, &MainWindow::on_closeServer_clicked);
 
     createIpList();
 }
@@ -44,6 +49,11 @@ void MainWindow::on_startServer_clicked() {
                 this, &MainWindow::readInfo);
         emit serverStarted();
         ui->serverStatus->setStyleSheet("background-color: rgb(0, 255, 0);");
+
+        if (ui->testBox->isChecked()){
+            timer.start();
+        }
+
         qInfo() << "Socket created!";
     }
 }
@@ -54,6 +64,11 @@ void MainWindow::on_closeServer_clicked() {
     QString fileName = ui->fileNameInput->toPlainText();
     emit serverFinished(fileName);
     ui->serverStatus->setStyleSheet("background-color: rgb(255, 0, 0);");
+
+    if (ui->testBox->isChecked()){
+        timer.stop();
+    }
+
     socket.close();
 }
 
