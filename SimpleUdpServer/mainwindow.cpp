@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::serverFinished,
             &csv, &CsvHandler::finishDataCollect);
 
-    timer.setInterval(1000);
-
     connect(&timer, &QTimer::timeout,
             this, &MainWindow::on_closeServer_clicked);
 
@@ -50,7 +48,7 @@ void MainWindow::on_startServer_clicked() {
         emit serverStarted();
         ui->serverStatus->setStyleSheet("background-color: rgb(0, 255, 0);");
 
-        if (ui->testBox->isChecked()){
+        if (ui->checkBox->isChecked()){
             timer.start();
         }
 
@@ -65,9 +63,9 @@ void MainWindow::on_closeServer_clicked() {
     emit serverFinished(fileName);
     ui->serverStatus->setStyleSheet("background-color: rgb(255, 0, 0);");
 
-    if (ui->testBox->isChecked()){
+    if (ui->checkBox->isChecked()){
         timer.stop();
-        ui->testBox->setChecked(false);
+        ui->checkBox->setChecked(false);
     }
 
     socket.close();
@@ -81,3 +79,9 @@ void MainWindow::createIpList() {
             ui->ipList->addItem(address.toString());
     }
 }
+
+void MainWindow::on_spinBox_valueChanged(int arg1) {
+    timer.setInterval(arg1*1000);
+    ui->checkBox->setText("Test " + QString::number(arg1) + " seconds");
+}
+

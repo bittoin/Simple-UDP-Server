@@ -227,9 +227,19 @@
         </spacer>
        </item>
        <item>
-        <widget class="QRadioButton" name="testBox">
+        <widget class="QCheckBox" name="checkBox">
          <property name="text">
-          <string>1 Second Test</string>
+          <string>Test x seconds</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBox">
+         <property name="maximum">
+          <number>2000</number>
+         </property>
+         <property name="value">
+          <number>1</number>
          </property>
         </widget>
        </item>

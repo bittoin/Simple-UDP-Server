@@ -37,6 +37,8 @@ private slots:
     void on_closeServer_clicked();
     void createIpList();
 
+    void on_spinBox_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QUdpSocket socket;
