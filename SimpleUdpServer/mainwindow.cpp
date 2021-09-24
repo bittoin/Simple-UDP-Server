@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include <QNetworkInterface>
+#include <QFileDialog>
+#include <QWidget>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,8 +21,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::serverFinished,
             &csv, &CsvHandler::finishDataCollect);
 
+    connect(this, &MainWindow::changeFileSavePath,
+            &csv, &CsvHandler::setDirPath);
+
+    connect(&csv, &CsvHandler::savedDataPath,
+            this, &MainWindow::updateSavedDataPath);
+
     connect(&timer, &QTimer::timeout,
             this, &MainWindow::on_closeServer_clicked);
+
+    timer.setInterval(DEFAULT_SEC);
 
     createIpList();
 }
@@ -39,6 +50,8 @@ void MainWindow::readInfo() {
 
 void MainWindow::on_startServer_clicked() {
     int portNumber = ui->portNumber->value();
+    ui->listWidget->clear();
+
     if (!socket.bind(QHostAddress("0.0.0.0"), portNumber)) {
         qInfo() << socket.errorString();
         return;
@@ -80,8 +93,23 @@ void MainWindow::createIpList() {
     }
 }
 
+void MainWindow::updateSavedDataPath(QString dirPath) {
+    currentDirPath = dirPath;
+    ui->listWidget->addItem("Data saved on: " + dirPath);
+}
+
 void MainWindow::on_spinBox_valueChanged(int arg1) {
-    timer.setInterval(arg1*1000);
-    ui->checkBox->setText("Test " + QString::number(arg1) + " seconds");
+    timer.setInterval(arg1*DEFAULT_SEC);
+    ui->checkBox->setText(QString::number(arg1) + " seconds");
+}
+
+void MainWindow::on_pushButton_clicked() {
+    currentDirPath = QFileDialog::getExistingDirectory();
+    emit changeFileSavePath(currentDirPath);
+}
+
+
+void MainWindow::on_button_file_path_clicked() {
+    QDesktopServices::openUrl(currentDirPath);
 }
 
