@@ -35,24 +35,42 @@ Qtcsv is a small easy-to-use library for reading and writing csv files in Qt.
     <p>Figura 1. Server features</p>
 </div>
 
-### 1. 
+#### 1. File Name
 
+The csv file will be saved with this name. If leave blank, will got a random name.
 
+#### 2. Choose Dir Button
 
-### 2. 
+Where the file will be saved. If leave blank, file will be saved on the same directory of the executable.
 
-### 3. 
+#### 3. Server Port
 
-### 4. 
+Server port. Must be set so the client can send data on this port. Default is 6666.
 
-### 5. 
+#### 4. Local IP List
 
-### 6. 
+Local IP list so it will be easier to see and use on UDP Client. This shows the same ip that you see on 'ifconfig' or 'ipconfig' commands in Linux and Windows.
 
-### 7. 
+#### 5. Start Server Button
 
-### 8. 
+Starts the UDP server and everytime that receives data in specific format, saves on csv object.
 
-### 9. 
+#### 6. Close Server Button
 
-### 10. 
+Closes the UDP server. Finishes data collect and automatically saves csv file.
+
+#### 7. Server status
+
+It's *green* when the server is working and *red* when it is off.
+
+#### 8. Collection timer
+
+If this field is active, the collection will last for the amount of seconds that is set. When the timer is over, automatically closes the server.
+
+#### 9. Data file path
+
+Path where the file was saved will be shown here when the server finishes.
+
+#### 10. Open File Path Button
+
+If clicked will open the directory where the file was saved.
