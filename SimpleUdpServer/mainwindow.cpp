@@ -3,7 +3,6 @@
 
 #include <QNetworkInterface>
 #include <QFileDialog>
-#include <QWidget>
 #include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
