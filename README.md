@@ -12,6 +12,7 @@ Qt was used to make a cross platform graphical interface in order to be used on 
 
 > Qt Creator 5.0.1
 > Kit on Linux: Desktop Qt 5.15.2 GCC 64bit
+> Kit on Windows: Desktop Qt 5.15.2 MinGW 64-bit
 > Internal libraries:
 >   - QDateTime
 >   - QTimer
@@ -30,10 +31,20 @@ Qtcsv is a small easy-to-use library for reading and writing csv files in Qt.
 
 ## How it works
 
+In order to receive all of the information and save csv files correctly, the UDP client must send data in a certain format of string:
+
+> "number1,number2,number3"
+
+The main reason is because the original project was made to save acceleration data from a drone, so 3 numbers are sent: acc_x, acc_y and acc_z.
+
+
+
 <div align='center'>
     <img src="https://github.com/bittoin/Simple-UDP-Server/blob/main/images/interface-signals.png">
     <p>Figura 1. Server features</p>
 </div>
+
+> 💡 One idea is to make the software receive whatever is sent.
 
 #### 1. File Name
 
@@ -74,3 +85,4 @@ Path where the file was saved will be shown here when the server finishes.
 #### 10. Open File Path Button
 
 If clicked will open the directory where the file was saved.
+
